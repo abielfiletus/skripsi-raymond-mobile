@@ -23,11 +23,7 @@ class CustomAppBar extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        Image.asset(
-          'assets/images/logo-ojk.png',
-          width: 70,
-          height: 70,
-        ),
+        const SizedBox(width: 70)
       ],
     );
   }

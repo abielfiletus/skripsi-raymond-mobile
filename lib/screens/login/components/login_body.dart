@@ -4,8 +4,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:skripsi_raymond/constant.dart';
-import 'package:skripsi_raymond/screens/calculator/calculator_page.dart';
+import 'package:skripsi_raymond/providers/auth_provider.dart';
+import 'package:skripsi_raymond/screens/home/home_page.dart';
 import 'package:skripsi_raymond/screens/register/register_page.dart';
 import 'package:skripsi_raymond/widgets/custom_text_field.dart';
 import 'package:skripsi_raymond/widgets/password_text_field.dart';
@@ -18,12 +20,11 @@ class LoginBody extends StatefulWidget {
 }
 
 class _LoginBodyState extends State<LoginBody> {
-  final GlobalKey<FormBuilderState> globalFormKey =
-      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> globalFormKey = GlobalKey<FormBuilderState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  bool _passVisible = true;
+  final bool _passVisible = true;
   bool _isLoading = false;
 
   @override
@@ -39,10 +40,8 @@ class _LoginBodyState extends State<LoginBody> {
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             validators: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context,
-                  errorText: 'harus terisi'),
-              FormBuilderValidators.email(context,
-                  errorText: 'email tidak valid'),
+              FormBuilderValidators.required(context, errorText: 'harus terisi'),
+              FormBuilderValidators.email(context, errorText: 'email tidak valid'),
             ]),
           ),
           verticalSpacer2,
@@ -53,10 +52,8 @@ class _LoginBodyState extends State<LoginBody> {
             hintText: 'Password',
             textInputAction: TextInputAction.done,
             validators: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context,
-                  errorText: 'harus terisi'),
-              FormBuilderValidators.minLength(context, 6,
-                  errorText: 'minimal 6 karakter'),
+              FormBuilderValidators.required(context, errorText: 'harus terisi'),
+              FormBuilderValidators.minLength(context, 6, errorText: 'minimal 6 karakter'),
             ]),
           ),
           verticalSpacer1,
@@ -89,10 +86,7 @@ class _LoginBodyState extends State<LoginBody> {
           Container(
             width: double.infinity,
             height: 40,
-            decoration: BoxDecoration(
-              color: thirdBackground,
-              borderRadius: BorderRadius.circular(10),
-            ),
+            decoration: BoxDecoration(color: thirdBackground, borderRadius: BorderRadius.circular(10)),
             child: Material(
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(10),
@@ -101,26 +95,18 @@ class _LoginBodyState extends State<LoginBody> {
                 highlightColor: Colors.black12,
                 child: Container(
                   decoration: const BoxDecoration(color: Colors.transparent),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 15.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                   child: Align(
                     alignment: Alignment.center,
                     child: _isLoading
                         ? const Text(
                             "Mohon Tunggu...",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                             textAlign: TextAlign.center,
                           )
                         : const Text(
                             "LOGIN",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
                   ),
@@ -131,18 +117,12 @@ class _LoginBodyState extends State<LoginBody> {
 
                     if (validateAndSave()) {
                       try {
-                        // await Provider.of<AuthProvider>(context, listen: false)
-                        //     .login(
-                        //   emailController.text,
-                        //   passwordController.text,
-                        // );
-                        setState(() => _isLoading = false);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const CalculatorPage(),
-                          ),
+                        await Provider.of<AuthProvider>(context, listen: false).login(
+                          emailController.text,
+                          passwordController.text,
                         );
+                        setState(() => _isLoading = false);
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) => const HomePage()));
                         Fluttertoast.showToast(
                           msg: 'Berhasil Masuk.',
                           backgroundColor: Colors.white,
@@ -152,7 +132,7 @@ class _LoginBodyState extends State<LoginBody> {
                         setState(() => _isLoading = false);
                         Fluttertoast.showToast(
                           msg: err.toString(),
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.amber,
                           textColor: Colors.white,
                         );
                       } catch (err) {

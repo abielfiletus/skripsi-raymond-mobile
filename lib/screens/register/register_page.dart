@@ -17,16 +17,14 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final GlobalKey<FormBuilderState> globalFormKey =
-      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> globalFormKey = GlobalKey<FormBuilderState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController noHpController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmationPasswordController =
-      TextEditingController();
+  final TextEditingController confirmationPasswordController = TextEditingController();
 
   String _jenisKelamin = '';
   final bool _passVisible = true;
@@ -173,10 +171,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     hintText: 'Password',
                     textInputAction: TextInputAction.next,
                     validators: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context,
-                          errorText: 'harus terisi'),
-                      FormBuilderValidators.minLength(context, 6,
-                          errorText: 'minimal 6 karakter'),
+                      FormBuilderValidators.required(context, errorText: 'harus terisi'),
+                      FormBuilderValidators.minLength(context, 6, errorText: 'minimal 6 karakter'),
                     ]),
                   ),
                   verticalSpacer2,
@@ -213,19 +209,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(10),
                         highlightColor: Colors.black12,
                         child: Container(
-                          decoration:
-                              const BoxDecoration(color: Colors.transparent),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 15.0),
+                          decoration: const BoxDecoration(color: Colors.transparent),
+                          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
                           child: Align(
                             alignment: Alignment.center,
                             child: _isLoading
                                 ? const Text(
                                     "Mohon Tunggu...",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                                     textAlign: TextAlign.center,
                                   )
                                 : const Text(

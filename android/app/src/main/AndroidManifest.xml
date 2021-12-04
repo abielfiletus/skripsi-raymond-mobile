@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.skripsi.kprkta.skripsi_raymond">
    <application
-        android:label="KTA KPR Credit Loan"
+        android:label="Credit Loan"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

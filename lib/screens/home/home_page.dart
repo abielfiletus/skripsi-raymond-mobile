@@ -1,58 +1,61 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skripsi_raymond/constant.dart';
+import 'package:skripsi_raymond/models/banner.dart';
+import 'package:skripsi_raymond/providers/banner_provider.dart';
+import 'package:skripsi_raymond/providers/berita_provider.dart';
 import 'package:skripsi_raymond/screens/home/components/news.dart';
+import 'package:skripsi_raymond/utils/preference.dart';
 import 'package:skripsi_raymond/widgets/bottom_navbar.dart';
 import 'package:skripsi_raymond/widgets/custom_app_bar.dart';
+import 'package:skripsi_raymond/widgets/loading.dart';
 
-const List<String> img = [
-  'https://awsimages.detik.net.id/community/media/visual/2019/09/05/1ab05025-e002-4777-9940-36cc34c1747c_43.png?w=700&q=90',
-  'https://cdn.theatlantic.com/thumbor/-EpdHDfBlNGz-nq6lKXMW-hj-kU=/153x0:1220x600/960x540/media/img/mt/2019/01/ariana_7-2/original.jpg'
-];
+List<Widget> imageSliders(List<BannerModel> img) {
+  return img.map((item) {
+    return Container(
+      margin: const EdgeInsets.all(2.0),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+        child: Image.network(item.image ?? '', fit: BoxFit.cover, width: 1000.0),
+      ),
+    );
+  }).toList();
+}
 
-List<Map<String, String>> news = [
-  {
-    'title': 'JUDUL BERITA PENGKREDITAN 1',
-    'image':
-        'https://awsimages.detik.net.id/community/media/visual/2019/09/05/1ab05025-e002-4777-9940-36cc34c1747c_43.png?w=700&q=90',
-  },
-  {
-    'title': 'JUDUL BERITA PENGKREDITAN 2',
-    'image':
-        'https://awsimages.detik.net.id/community/media/visual/2019/09/05/1ab05025-e002-4777-9940-36cc34c1747c_43.png?w=700&q=90',
-  },
-  {
-    'title': 'JUDUL BERITA PENGKREDITAN 3',
-    'image':
-        'https://awsimages.detik.net.id/community/media/visual/2019/09/05/1ab05025-e002-4777-9940-36cc34c1747c_43.png?w=700&q=90',
-  },
-  {
-    'title': 'JUDUL BERITA PENGKREDITAN 4',
-    'image':
-        'https://awsimages.detik.net.id/community/media/visual/2019/09/05/1ab05025-e002-4777-9940-36cc34c1747c_43.png?w=700&q=90',
-  },
-  {
-    'title': 'JUDUL BERITA PENGKREDITAN 5',
-    'image':
-        'https://awsimages.detik.net.id/community/media/visual/2019/09/05/1ab05025-e002-4777-9940-36cc34c1747c_43.png?w=700&q=90',
-  },
-];
-
-List<Widget> imageSliders = img
-    .map((item) => Container(
-          margin: const EdgeInsets.all(2.0),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-            child: Image.network(item, fit: BoxFit.cover, width: 1000.0),
-          ),
-        ))
-    .toList();
-
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool loadingBerita = true;
+  bool loadingBanner = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<BeritaProvider>(context, listen: false).getBerita(Preferences.token).then((_) {
+      setState(() => loadingBerita = false);
+    }).catchError((_) {
+      setState(() => loadingBerita = false);
+    });
+    Provider.of<BannerProvider>(context, listen: false).getBanner(Preferences.token).then((_) {
+      setState(() => loadingBanner = false);
+    }).catchError((_) {
+      setState(() => loadingBanner = false);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final beritaData = Provider.of<BeritaProvider>(context).berita;
+    final bannerData = Provider.of<BannerProvider>(context).banner;
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
@@ -73,16 +76,18 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                autoPlay: true,
-                aspectRatio: 2.0,
-                enlargeCenterPage: true,
-                autoPlayInterval: const Duration(seconds: 10),
-                autoPlayAnimationDuration: const Duration(seconds: 3),
-              ),
-              items: imageSliders,
-            ),
+            loadingBanner
+                ? const CustomLoading()
+                : CarouselSlider(
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                      autoPlayInterval: const Duration(seconds: 10),
+                      autoPlayAnimationDuration: const Duration(seconds: 3),
+                    ),
+                    items: imageSliders(bannerData),
+                  ),
             verticalSpacer7,
             const Text(
               'BERITA',
@@ -92,18 +97,29 @@ class HomePage extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  for (int i = 0; i < news.length; i++)
-                    News(
-                      title: news[i]['title'],
-                      image: news[i]['image'],
-                      last: i == news.length - 1,
-                    )
-                ]),
-              ),
-            ),
+            loadingBerita
+                ? const CustomLoading()
+                : Expanded(
+                    child: beritaData.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: ClipRRect(
+                              child: Image.asset('assets/images/empty_news.jpg', fit: BoxFit.cover),
+                              borderRadius: const BorderRadius.all(Radius.circular(10)),
+                            ),
+                          )
+                        : SingleChildScrollView(
+                            child: Column(children: [
+                              for (int i = 0; i < beritaData.length; i++)
+                                News(
+                                  title: beritaData[i].title ?? '',
+                                  image: beritaData[i].image ?? '',
+                                  link: beritaData[i].link ?? '',
+                                  last: i == beritaData.length - 1,
+                                )
+                            ]),
+                          ),
+                  ),
           ],
         ),
       ),

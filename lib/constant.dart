@@ -16,3 +16,7 @@ const verticalSpacer4 = SizedBox(height: 20);
 const verticalSpacer5 = SizedBox(height: 25);
 const verticalSpacer6 = SizedBox(height: 30);
 const verticalSpacer7 = SizedBox(height: 35);
+
+const String apiUrl = '178.128.63.183:3000';
+const String defaultAvatarMan =
+    "https://image.shutterstock.com/image-vector/young-man-avatar-character-260nw-661669825.jpg";

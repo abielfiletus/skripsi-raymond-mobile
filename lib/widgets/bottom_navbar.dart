@@ -13,7 +13,6 @@ class BottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: const BoxDecoration(
         color: fourthBackground,
         boxShadow: [
@@ -22,62 +21,64 @@ class BottomNavbar extends StatelessWidget {
       ),
       height: 65,
       width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          BottomNavbarButton(
-            text: 'HOME',
-            fontWeight: FontWeight.bold,
-            active: active == 'home',
-            onPress: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) => const HomePage(),
-                ),
-              );
-            },
-          ),
-          BottomNavbarButton(
-            text: 'CALCULATOR',
-            fontWeight: FontWeight.bold,
-            active: active == 'calculator',
-            onPress: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) => const CalculatorPage(),
-                ),
-              );
-            },
-          ),
-          BottomNavbarButton(
-            text: 'CREDIT LOAN',
-            fontWeight: FontWeight.bold,
-            active: active == 'credit loan',
-            onPress: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) => const CalculatorPage(),
-                ),
-              );
-            },
-          ),
-          BottomNavbarButton(
-            text: 'PROFILE',
-            fontWeight: FontWeight.bold,
-            active: active == 'profile',
-            onPress: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (ctx) => const ProfilePage(),
-                ),
-              );
-            },
-          ),
-        ],
+      child: SizedBox(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            BottomNavbarButton(
+              text: 'HOME',
+              fontWeight: FontWeight.bold,
+              active: active == 'home',
+              onPress: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => const HomePage(),
+                  ),
+                );
+              },
+            ),
+            BottomNavbarButton(
+              text: 'CALCULATOR',
+              fontWeight: FontWeight.bold,
+              active: active == 'calculator',
+              onPress: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => const CalculatorPage(),
+                  ),
+                );
+              },
+            ),
+            BottomNavbarButton(
+              text: 'CREDIT LOAN',
+              fontWeight: FontWeight.bold,
+              active: active == 'credit loan',
+              onPress: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => const CalculatorPage(),
+                  ),
+                );
+              },
+            ),
+            BottomNavbarButton(
+              text: 'PROFILE',
+              fontWeight: FontWeight.bold,
+              active: active == 'profile',
+              onPress: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => const ProfilePage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

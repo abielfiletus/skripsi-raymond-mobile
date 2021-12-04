@@ -50,10 +50,7 @@ class _CustomButtonState extends State<CustomButton> {
           highlightColor: Colors.black12,
           child: Container(
             decoration: const BoxDecoration(color: Colors.transparent),
-            padding: const EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 15.0,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
             child: Align(
               alignment: Alignment.center,
               child: _isLoading
@@ -80,20 +77,13 @@ class _CustomButtonState extends State<CustomButton> {
           onTap: () async {
             if (!_isLoading) {
               setState(() => _isLoading = true);
-              final test = widget.validateFunction != null
-                  ? widget.validateFunction!()
-                  : true;
+              final test = widget.validateFunction != null ? widget.validateFunction!() : true;
 
               if (test) {
                 try {
-                  // await Provider.of<AuthProvider>(context, listen: false)
-                  //     .login(
-                  //   emailController.text,
-                  //   passwordController.text,
-                  // );
                   setState(() => _isLoading = false);
                   if (widget.nextRoute != null) {
-                    widget.nextRoute!();
+                    await widget.nextRoute!();
                   }
                   Fluttertoast.showToast(
                     msg: widget.toastMsg,
@@ -109,6 +99,7 @@ class _CustomButtonState extends State<CustomButton> {
                   );
                 } catch (err) {
                   setState(() => _isLoading = false);
+                  print(err);
                   Fluttertoast.showToast(
                     msg: err.toString(),
                     backgroundColor: Colors.red,
