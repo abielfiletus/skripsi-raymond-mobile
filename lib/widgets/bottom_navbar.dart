@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skripsi_raymond/constant.dart';
 import 'package:skripsi_raymond/screens/calculator/calculator_page.dart';
+import 'package:skripsi_raymond/screens/credit-loan/credit_loan_page.dart';
 import 'package:skripsi_raymond/screens/home/home_page.dart';
 import 'package:skripsi_raymond/screens/profile/profile_page.dart';
 import 'package:skripsi_raymond/widgets/bottom_navbar_button.dart';
@@ -15,9 +16,7 @@ class BottomNavbar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: fourthBackground,
-        boxShadow: [
-          BoxShadow(blurRadius: 5, color: Colors.black26, spreadRadius: 1)
-        ],
+        boxShadow: [BoxShadow(blurRadius: 5, color: Colors.black26, spreadRadius: 1)],
       ),
       height: 65,
       width: double.infinity,
@@ -59,7 +58,7 @@ class BottomNavbar extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (ctx) => const CalculatorPage(),
+                    builder: (ctx) => const CreditLoanPage(),
                   ),
                 );
               },

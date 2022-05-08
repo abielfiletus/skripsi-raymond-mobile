@@ -45,6 +45,7 @@ class ProductCard extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 1,
                 ),
                 verticalSpacer1,
                 Row(
@@ -70,17 +71,11 @@ class ProductCard extends StatelessWidget {
                       child: TextButton(
                         onPressed: onTap ?? () {},
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                            secondaryBackground,
-                          ),
+                          backgroundColor: MaterialStateProperty.all(secondaryBackground),
                           shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                           ),
-                          padding: MaterialStateProperty.all(
-                            const EdgeInsets.all(5),
-                          ),
+                          padding: MaterialStateProperty.all(const EdgeInsets.all(5)),
                         ),
                         child: const Text(
                           'AJUKAN SEKARANG',

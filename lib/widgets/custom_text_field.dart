@@ -9,6 +9,11 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validators;
   final TextInputType? keyboardType;
   final String? suffix;
+  final InputBorder? border;
+  final InputBorder? focusedBorder;
+  final TextStyle? textStyle;
+  final EdgeInsetsGeometry? padding;
+  final bool? dense;
 
   const CustomTextField({
     required this.name,
@@ -18,6 +23,11 @@ class CustomTextField extends StatelessWidget {
     this.validators,
     this.keyboardType,
     this.suffix,
+    this.border,
+    this.focusedBorder,
+    this.textStyle,
+    this.padding,
+    this.dense,
     Key? key,
   }) : super(key: key);
 
@@ -29,36 +39,29 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       controller: controller,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      style: textStyle,
       decoration: InputDecoration(
         hintText: hintText,
         filled: true,
         fillColor: Colors.white,
         suffixText: suffix,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 15,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.black12,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.white,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.white,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
+        contentPadding: padding ?? const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        isDense: dense,
+        focusedBorder: focusedBorder ??
+            OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.black12, width: 1.0),
+              borderRadius: BorderRadius.circular(20),
+            ),
+        border: border ??
+            OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(20),
+            ),
+        enabledBorder: border ??
+            OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(20),
+            ),
       ),
       validator: validators,
     );

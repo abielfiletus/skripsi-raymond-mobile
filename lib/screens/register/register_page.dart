@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:skripsi_raymond/constant.dart';
+import 'package:skripsi_raymond/providers/auth_provider.dart';
+import 'package:skripsi_raymond/screens/login/login_page.dart';
 import 'package:skripsi_raymond/widgets/custom_text_field.dart';
 import 'package:skripsi_raymond/widgets/password_text_field.dart';
 
@@ -173,6 +176,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     validators: FormBuilderValidators.compose([
                       FormBuilderValidators.required(context, errorText: 'harus terisi'),
                       FormBuilderValidators.minLength(context, 6, errorText: 'minimal 6 karakter'),
+                      (val) {
+                        if (!RegExp(r"[a-z]").hasMatch(val!)) return 'Harus memiliki setidaknya 1 huruf kecil';
+                        if (!RegExp(r"[A-Z]").hasMatch(val)) return 'Harus memiliki setidaknya 1 huruf besar';
+                        if (!RegExp(r"[0-9]").hasMatch(val)) return 'Harus memiliki setidaknya 1 angka';
+                        return null;
+                      },
                     ]),
                   ),
                   verticalSpacer2,
@@ -183,15 +192,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     hintText: 'Confirmation Password',
                     textInputAction: TextInputAction.next,
                     validators: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: 'harus terisi',
-                      ),
-                      FormBuilderValidators.equal(
-                        context,
-                        passwordController.text,
-                        errorText: 'tidak sama dengan password',
-                      ),
+                      FormBuilderValidators.required(context, errorText: 'harus terisi'),
+                      FormBuilderValidators.equal(context, passwordController.text,
+                          errorText: 'tidak sama dengan password'),
                     ]),
                   ),
                   verticalSpacer4,
@@ -236,20 +239,26 @@ class _RegisterPageState extends State<RegisterPage> {
 
                             if (validateAndSave()) {
                               try {
-                                // await Provider.of<AuthProvider>(context, listen: false)
-                                //     .login(
-                                //   emailController.text,
-                                //   passwordController.text,
-                                // );
+                                await Provider.of<AuthProvider>(context, listen: false).register(
+                                  noTelp: noHpController.text,
+                                  firstName: firstNameController.text,
+                                  lastName: lastNameController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  confirmationPassword: confirmationPasswordController.text,
+                                  gender: _jenisKelamin,
+                                  username: usernameController.text,
+                                );
                                 setState(() => _isLoading = false);
-                                // Navigator.pushReplacement(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (ctx) {
-                                //      return HomePage();
-                                //     },
-                                //   ),
-                                // );
+
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (ctx) {
+                                      return const LoginPage();
+                                    },
+                                  ),
+                                );
                                 Fluttertoast.showToast(
                                   msg: 'Berhasil Mendaftar. Silahkan Login.',
                                   backgroundColor: Colors.white,

@@ -90,6 +90,7 @@ class ProfilePage extends StatelessWidget {
                         0: FlexColumnWidth(4),
                         1: FlexColumnWidth(1),
                         2: FlexColumnWidth(12),
+                        3: FlexColumnWidth(1),
                       },
                       children: [
                         TableRow(
@@ -113,6 +114,7 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(height: 20)
                           ],
                         ),
                         TableRow(
@@ -136,6 +138,7 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(height: 20)
                           ],
                         ),
                         TableRow(
@@ -159,6 +162,7 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(height: 20)
                           ],
                         ),
                         TableRow(
@@ -182,6 +186,7 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(height: 20)
                           ],
                         ),
                         TableRow(
@@ -205,6 +210,7 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(height: 20)
                           ],
                         ),
                         TableRow(
@@ -253,6 +259,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 20)
                           ],
                         ),
                       ],

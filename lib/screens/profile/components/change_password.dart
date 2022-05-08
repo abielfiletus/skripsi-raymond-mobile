@@ -46,6 +46,12 @@ class _ChangePasswordState extends State<ChangePassword> {
               validators: FormBuilderValidators.compose([
                 FormBuilderValidators.required(context, errorText: 'harus terisi'),
                 FormBuilderValidators.minLength(context, 6, errorText: 'minimal 6 karakter'),
+                (val) {
+                  if (!RegExp(r"[a-z]").hasMatch(val!)) return 'Harus memiliki setidaknya 1 huruf kecil';
+                  if (!RegExp(r"[A-Z]").hasMatch(val)) return 'Harus memiliki setidaknya 1 huruf besar';
+                  if (!RegExp(r"[0-9]").hasMatch(val)) return 'Harus memiliki setidaknya 1 angka';
+                  return null;
+                },
               ]),
             ),
             CustomPasswordTextField(

@@ -57,6 +57,9 @@ class AuthProvider extends ChangeNotifier {
     required String email,
     required String noTelp,
     required String password,
+    required String confirmationPassword,
+    required String gender,
+    required String username,
   }) async {
     try {
       final res = await dio.post(
@@ -64,9 +67,12 @@ class AuthProvider extends ChangeNotifier {
         data: {
           'first_name': firstName,
           'last_name': lastName,
+          'username': username,
           'no_telp': noTelp,
           'email': email,
           'password': password,
+          'confirmation_password': confirmationPassword,
+          'gender': gender,
         },
         options: Options(
           responseType: ResponseType.json,
@@ -74,7 +80,7 @@ class AuthProvider extends ChangeNotifier {
           validateStatus: (status) => status! < 500,
         ),
       );
-
+      print(res.data);
       final bool status = res.data['status'];
       if (!status) {
         throw HttpException(res.data['err'].toString().replaceAll(RegExp(r'[\{\}\:]'), ''));

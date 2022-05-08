@@ -18,7 +18,7 @@ List<Widget> imageSliders(List<BannerModel> img) {
       margin: const EdgeInsets.all(2.0),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-        child: Image.network(item.image ?? '', fit: BoxFit.cover, width: 1000.0),
+        child: Image.network(item.image ?? '', fit: BoxFit.contain, width: 1000.0),
       ),
     );
   }).toList();

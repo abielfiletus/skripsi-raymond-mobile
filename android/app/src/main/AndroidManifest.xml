@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.skripsi.kprkta.skripsi_raymond">
-   <application
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
         android:label="Credit Loan"
         android:icon="@mipmap/ic_launcher">
         <activity

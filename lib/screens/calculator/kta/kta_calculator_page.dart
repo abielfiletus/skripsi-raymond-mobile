@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:skripsi_raymond/constant.dart';
+import 'package:skripsi_raymond/providers/kta_provider.dart';
 import 'package:skripsi_raymond/screens/calculator/kta/kta_result_page.dart';
+import 'package:skripsi_raymond/utils/preference.dart';
 import 'package:skripsi_raymond/widgets/custom_button.dart';
 import 'package:skripsi_raymond/widgets/custom_text_field.dart';
 
@@ -14,16 +18,14 @@ class KtaCalculatorPage extends StatefulWidget {
 }
 
 class _KtaCalculatorPageState extends State<KtaCalculatorPage> {
-  final GlobalKey<FormBuilderState> globalFormKey =
-      GlobalKey<FormBuilderState>();
-  final TextEditingController hargaRumahController = TextEditingController();
+  final GlobalKey<FormBuilderState> globalFormKey = GlobalKey<FormBuilderState>();
+  final TextEditingController pinjamanController = TextEditingController();
   final TextEditingController tenorController = TextEditingController();
   final TextEditingController sukuBungaController = TextEditingController();
 
   bool validateAndSave() {
     final form = globalFormKey.currentState;
     if (form!.validate()) {
-      debugPrint('here');
       form.save();
       return true;
     } else {
@@ -41,12 +43,12 @@ class _KtaCalculatorPageState extends State<KtaCalculatorPage> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: const Text('Harga Rumah'),
+              child: const Text('Jumlah Pinjaman'),
             ),
             verticalSpacer1,
             CustomTextField(
-              name: 'harga rumah',
-              controller: hargaRumahController,
+              name: 'jumlah pinjaman',
+              controller: pinjamanController,
               keyboardType: TextInputType.number,
               hintText: 'Masukkan Angka',
               textInputAction: TextInputAction.next,
@@ -106,15 +108,28 @@ class _KtaCalculatorPageState extends State<KtaCalculatorPage> {
               toastMsg: 'Berhasil Menghitung.',
               width: 100,
               color: secondaryBackground,
-              nextRoute: () {
-                final form = globalFormKey.currentState;
-                form!.reset();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => const KtaResultPage(),
-                  ),
-                );
+              nextRoute: () async {
+                try {
+                  final data = await Provider.of<KtaResultProvider>(context, listen: false).getKtaResult(
+                    token: Preferences.token,
+                    tenor: double.parse(tenorController.text),
+                    pinjaman: double.parse(pinjamanController.text),
+                    interest: double.parse(sukuBungaController.text),
+                  );
+                  final form = globalFormKey.currentState;
+                  form!.reset();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => KtaResultPage(data),
+                    ),
+                  );
+                } catch (err) {
+                  Fluttertoast.showToast(
+                    msg: 'Gagal menghitung dan mengambil rekomendasi',
+                    backgroundColor: Colors.red,
+                  );
+                }
               },
             )
           ],

@@ -27,13 +27,15 @@ class News extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
           decoration: BoxDecoration(
             border: Border(
-              bottom: last ? const BorderSide(width: 0) : const BorderSide(color: Colors.white, width: 3),
+              bottom: last
+                  ? const BorderSide(width: 0, color: Colors.transparent)
+                  : const BorderSide(color: Colors.white, width: 3),
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, softWrap: true, maxLines: 3, style: const TextStyle(color: Colors.white)),
+              Flexible(child: Text(title, softWrap: true, maxLines: 3, style: const TextStyle(color: Colors.white))),
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(image, fit: BoxFit.cover, width: 60, height: 60),

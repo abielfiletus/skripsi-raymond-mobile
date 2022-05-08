@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:skripsi_raymond/constant.dart';
+import 'package:skripsi_raymond/providers/kpr_provider.dart';
 import 'package:skripsi_raymond/screens/calculator/kpr/kpr_result_page.dart';
+import 'package:skripsi_raymond/utils/preference.dart';
 import 'package:skripsi_raymond/widgets/custom_button.dart';
 import 'package:skripsi_raymond/widgets/custom_text_field.dart';
 
@@ -14,8 +18,7 @@ class KprCalculatorPage extends StatefulWidget {
 }
 
 class _KprCalculatorPageState extends State<KprCalculatorPage> {
-  final GlobalKey<FormBuilderState> globalFormKey =
-      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> globalFormKey = GlobalKey<FormBuilderState>();
   final TextEditingController hargaRumahController = TextEditingController();
   final TextEditingController tenorController = TextEditingController();
   final TextEditingController sukuBungaController = TextEditingController();
@@ -127,15 +130,30 @@ class _KprCalculatorPageState extends State<KprCalculatorPage> {
               toastMsg: 'Berhasil Menghitung.',
               width: 100,
               color: secondaryBackground,
-              nextRoute: () {
-                final form = globalFormKey.currentState;
-                form!.reset();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => const KprResultPage(),
-                  ),
-                );
+              nextRoute: () async {
+                try {
+                  final data = await Provider.of<KprResultProvider>(context, listen: false).getKprResult(
+                    token: Preferences.token,
+                    tenor: double.parse(tenorController.text),
+                    hargaRumah: double.parse(hargaRumahController.text),
+                    interest: double.parse(sukuBungaController.text),
+                    dp: double.parse(dpController.text),
+                  );
+                  final form = globalFormKey.currentState;
+                  form!.reset();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => KprResultPage(data),
+                    ),
+                  );
+                } catch (err) {
+                  print(err);
+                  Fluttertoast.showToast(
+                    msg: 'Gagal menghitung dan mengambil rekomendasi',
+                    backgroundColor: Colors.red,
+                  );
+                }
               },
             )
           ],

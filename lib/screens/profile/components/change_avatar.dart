@@ -12,7 +12,8 @@ import 'package:skripsi_raymond/widgets/dialog.dart';
 
 class ChangeAvatar extends StatefulWidget {
   final String avatar;
-  const ChangeAvatar({required this.avatar, Key? key}) : super(key: key);
+  final String? title;
+  const ChangeAvatar({required this.avatar, this.title, Key? key}) : super(key: key);
 
   @override
   _ChangeAvatarState createState() => _ChangeAvatarState();
@@ -27,7 +28,7 @@ class _ChangeAvatarState extends State<ChangeAvatar> {
     return CustomDialog(
       content: Column(
         children: [
-          const Text('Ubah Gambar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          Text(widget.title ?? 'Ubah Gambar', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           verticalSpacer3,
           Center(
             child: GestureDetector(
